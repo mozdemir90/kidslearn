@@ -1,20 +1,28 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kids_learn/main.dart';
 
 void main() {
-  testWidgets('App starts and shows Learn Numbers button', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('App starts and shows Sayıları Öğren button by default (Turkish)', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: KidsLearnApp()));
 
-    // Verify that our home screen shows the button.
-    expect(find.text('Learn Numbers'), findsOneWidget);
+    // Verify that our home screen shows the Turkish button by default
+    expect(find.text('🔢 Sayıları Öğren'), findsOneWidget);
+
+    // Verify the language switch toggle is present
+    expect(find.text('TR'), findsOneWidget);
+  });
+
+  testWidgets('Navigating to NumberScreen displays number cards', (WidgetTester tester) async {
+    await tester.pumpWidget(const ProviderScope(child: KidsLearnApp()));
+
+    // Tap the button to navigate
+    await tester.tap(find.text('🔢 Sayıları Öğren'));
+    await tester.pumpAndSettle();
+
+    // Verify NumberScreen title and elements
+    expect(find.text('Sayıları Öğrenelim'), findsOneWidget);
+    expect(find.text('Bir'), findsOneWidget);
+    expect(find.text('1'), findsWidgets);
   });
 }
