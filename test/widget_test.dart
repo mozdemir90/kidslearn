@@ -3,26 +3,53 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kids_learn/main.dart';
 
 void main() {
-  testWidgets('App starts and shows Sayıları Öğren button by default (Turkish)', (WidgetTester tester) async {
+  testWidgets('Home displays 3 categories: Numbers, Colors, and Shapes', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: KidsLearnApp()));
 
-    // Verify that our home screen shows the Turkish button by default
-    expect(find.text('🔢 Sayıları Öğren'), findsOneWidget);
+    // Verify category titles in Turkish (default)
+    expect(find.text('Sayıları Öğren'), findsOneWidget);
+    expect(find.text('Renkleri Öğren'), findsOneWidget);
+    expect(find.text('Şekilleri Öğren'), findsOneWidget);
 
-    // Verify the language switch toggle is present
+    // Verify language flag
     expect(find.text('TR'), findsOneWidget);
   });
 
-  testWidgets('Navigating to NumberScreen displays number cards', (WidgetTester tester) async {
+  testWidgets('Navigating to Numbers category displays number cards', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: KidsLearnApp()));
 
-    // Tap the button to navigate
-    await tester.tap(find.text('🔢 Sayıları Öğren'));
+    final numbersBtn = find.text('Sayıları Öğren');
+    await tester.ensureVisible(numbersBtn);
+    await tester.tap(numbersBtn);
     await tester.pumpAndSettle();
 
-    // Verify NumberScreen title and elements
     expect(find.text('Sayıları Öğrenelim'), findsOneWidget);
     expect(find.text('Bir'), findsOneWidget);
-    expect(find.text('1'), findsWidgets);
+  });
+
+  testWidgets('Navigating to Colors category displays color cards', (WidgetTester tester) async {
+    await tester.pumpWidget(const ProviderScope(child: KidsLearnApp()));
+
+    final colorsBtn = find.text('Renkleri Öğren');
+    await tester.ensureVisible(colorsBtn);
+    await tester.tap(colorsBtn);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Renkleri Öğrenelim'), findsOneWidget);
+    expect(find.text('Kırmızı'), findsWidgets);
+    expect(find.text('Mavi'), findsWidgets);
+  });
+
+  testWidgets('Navigating to Shapes category displays shape cards', (WidgetTester tester) async {
+    await tester.pumpWidget(const ProviderScope(child: KidsLearnApp()));
+
+    final shapesBtn = find.text('Şekilleri Öğren');
+    await tester.ensureVisible(shapesBtn);
+    await tester.tap(shapesBtn);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Şekilleri Öğrenelim'), findsOneWidget);
+    expect(find.text('Daire'), findsWidgets);
+    expect(find.text('Kare'), findsWidgets);
   });
 }
